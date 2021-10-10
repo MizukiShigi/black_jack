@@ -5,7 +5,7 @@ require_once('BlackJackHandEvaluator.php');
 require_once('BlackJackHand.php');
 require_once('PlayerInterface.php');
 
-class BlackJackPlayer implements PlayerInterface
+class BlackJackDealer implements PlayerInterface
 {
     private BlackJackHand $hand;
 
@@ -23,6 +23,9 @@ class BlackJackPlayer implements PlayerInterface
     {
         $card = $deck->drawCard();
         $this->addHand($card);
+        if ($this->getCountHandNumber() === 2) {
+            return $this->name . 'の引いた2枚目のカードはわかりません。' . PHP_EOL;
+        }
         return $this->name . 'の引いたカードは' . $card->getSuit() . 'の' . $card->getNumber() . 'です' . PHP_EOL;
     }
 
