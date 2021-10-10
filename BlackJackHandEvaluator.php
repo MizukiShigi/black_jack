@@ -9,11 +9,11 @@ class BlackJackHandEvaluator
     private const MIN_A_RANK = 1;
     private const DRAW = 'Draw';
 
-    public function getHandScore(array $hand): int
+    public function getHandScore(BlackJackHand $hand): int
     {
         $handScore = 0;
         $countA = 0;
-        foreach ($hand as $card) {
+        foreach ($hand->getHand() as $card) {
             if ($card->getNumber() === 'A') {
                 $countA ++;
             } else {
@@ -60,13 +60,13 @@ class BlackJackHandEvaluator
         }
     }
 
-    public function isHandBurst(array $hand): bool
+    public function isHandBurst(BlackJackHand $hand): bool
     {
         return $this->getHandScore($hand) >= self::HAND_BURST;
     }
 
-    private function isBlackJack(array $hand): bool
+    private function isBlackJack(BlackJackHand $hand): bool
     {
-        return $this->getHandScore($hand) === self::BLACK_JACK && count($hand) === 2;
+        return $this->getHandScore($hand) === self::BLACK_JACK && count($hand->getHand()) === 2;
     }
 }
