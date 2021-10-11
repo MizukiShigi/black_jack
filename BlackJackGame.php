@@ -15,7 +15,7 @@ class BlackJackGame
     private BlackJackHandEvaluator $handEvaluator;
     private BlackJackDeck $deck;
 
-    public function __construct(private PlayerInterface $dealer, private PlayerInterface $player, private AdditionalPlayer $additionalPlayerNumber)
+    public function __construct(private Player $dealer, private Player $player, private AdditionalPlayer $additionalPlayerNumber)
     {
         $this->handEvaluator = new BlackJackHandEvaluator();
         $this->deck = new BlackJackDeck();
@@ -47,7 +47,7 @@ class BlackJackGame
         echo 'ブラックジャックを終了します。' . PHP_EOL;
     }
 
-    private function init(PlayerInterFace $player): void
+    private function init(Player $player): void
     {
         for ($i=0; $i<2; $i++) {
             $initDrawCard = $player->drawCard($this->deck);
@@ -75,7 +75,7 @@ class BlackJackGame
         }
     }
 
-    private function cpuPlayerTurn(PlayerInterface $cpu): void
+    private function cpuPlayerTurn(Player $cpu): void
     {
         $cpuPlayerName = $cpu->getName();
         while (true) {
@@ -110,7 +110,7 @@ class BlackJackGame
         }
     }
 
-    private function matchPlayerVsDealer(PlayerInterface $player, PlayerInterface $dealer): void
+    private function matchPlayerVsDealer(Player $player, Player $dealer): void
     {
         $playerName = $player->getName();
         $dealerName = $dealer->getName();

@@ -3,20 +3,13 @@ namespace BlackJack;
 
 require_once('BlackJackHandEvaluator.php');
 require_once('BlackJackHand.php');
-require_once('PlayerInterface.php');
+require_once('Player.php');
 
-class BlackJackDealer implements PlayerInterface
+class BlackJackDealer extends Player
 {
-    private BlackJackHand $hand;
-
     public function __construct(private string $name)
     {
-        $this->hand = new BlackJackHand();
-    }
-
-    public function getName(): string
-    {
-        return $this->name;
+        parent::__construct($name);
     }
 
     public function drawCard(BlackJackDeck $deck): string
@@ -27,25 +20,5 @@ class BlackJackDealer implements PlayerInterface
             return $this->name . 'の引いた2枚目のカードはわかりません。' . PHP_EOL;
         }
         return $this->name . 'の引いたカードは' . $card->getSuit() . 'の' . $card->getNumber() . 'です' . PHP_EOL;
-    }
-
-    public function addHand(BlackJackCard $card): void
-    {
-        $this->hand->addHand($card);
-    }
-
-    public function getHand(): array
-    {
-        return $this->hand->getHand();
-    }
-
-    public function getHandScore(): int
-    {
-        return $this->hand->getHandScore();
-    }
-
-    public function getCountHandNumber(): int
-    {
-        return $this->hand->getCountHandNumber();
     }
 }
