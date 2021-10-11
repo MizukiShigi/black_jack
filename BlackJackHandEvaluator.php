@@ -7,7 +7,7 @@ class BlackJackHandEvaluator
     private const HAND_BURST = 22;
     private const DRAW = 'Draw';
 
-    public function getWinner(PlayerInterface $dealer, PlayerInterface $player): string
+    public function getWinner(Player $dealer, Player $player): string
     {
         $dealerHandScore = $dealer->getHandScore();
         $playerHandScore = $player->getHandScore();
