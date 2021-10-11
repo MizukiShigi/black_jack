@@ -17,9 +17,9 @@ class BlackJackDeck
         }
         shuffle($this->deck);
     }
-    public function drawCards(int $drawNum): array
+    public function drawCard(): BlackJackCard
     {
-        $drawCards = array_splice($this->deck, 0, $drawNum);
-        return $drawCards;
+        $drawCard = array_splice($this->deck, 0, 1)[0];
+        return $drawCard;
     }
 }

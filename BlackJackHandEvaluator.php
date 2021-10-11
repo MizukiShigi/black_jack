@@ -5,54 +5,33 @@ class BlackJackHandEvaluator
 {
     private const BLACK_JACK = 21;
     private const HAND_BURST = 22;
-    private const MAX_A_RANK = 11;
-    private const MIN_A_RANK = 1;
     private const DRAW = 'Draw';
 
-    public function getHandScore(BlackJackHand $hand): int
+    public function getWinner(PlayerInterface $dealer, PlayerInterface $player): string
     {
-        $handScore = 0;
-        $countA = 0;
-        foreach ($hand->getHand() as $card) {
-            if ($card->getNumber() === 'A') {
-                $countA ++;
-            } else {
-                $handScore += $card->getRank();
-            }
-        }
-        for ($i=0; $i<$countA; $i++) {
-            if ($handScore + self::MAX_A_RANK < self::HAND_BURST) {
-                $handScore += self::MAX_A_RANK;
-            } else {
-                $handScore += self::MIN_A_RANK;
-            }
-        }
-        return $handScore;
-    }
-
-    public function getWinner(BlackJackPlayer $dealer, BlackJackPlayer $player): string
-    {
-        $dealerHand = $dealer->getHand();
-        $playerHand = $player->getHand();
+        $dealerHandScore = $dealer->getHandScore();
+        $playerHandScore = $player->getHandScore();
+        $dealerHandNumber = $dealer->getCountHandNumber();
+        $playerHandNumber = $player->getCountHandNumber();
         $dealerName = $dealer->getName();
         $playerName = $player->getName();
         
-        if ($this->isHandBurst($dealerHand) && $this->isHandBurst($playerHand)) {
+        if ($this->isHandBurst($dealerHandScore) && $this->isHandBurst($playerHandScore)) {
             return $dealerName;
-        } elseif ($this->isHandBurst($playerHand)) {
+        } elseif ($this->isHandBurst($playerHandScore)) {
             return $dealerName;
-        } elseif ($this->isHandBurst($dealerHand)) {
+        } elseif ($this->isHandBurst($dealerHandScore)) {
             return $playerName;
-        } elseif ($this->getHandScore($dealerHand) > $this->getHandScore($playerHand)) {
+        } elseif ($dealerHandScore > $playerHandScore) {
             return $dealerName;
-        } elseif ($this->getHandScore($playerHand) > $this->getHandScore($dealerHand)) {
+        } elseif ($playerHandScore > $dealerHandScore) {
             return $playerName;
         } else {
-            if ($this->isBlackJack($dealerHand) && $this->isBlackJack($playerHand)) {
+            if ($this->isBlackJack($dealerHandScore, $dealerHandNumber) && $this->isBlackJack($playerHandScore, $playerHandNumber)) {
                 return self::DRAW;
-            } elseif ($this->isBlackJack($dealerHand)) {
+            } elseif ($this->isBlackJack($dealerHandScore, $dealerHandNumber)) {
                 return $dealerName;
-            } elseif ($this->isBlackJack($playerHand)) {
+            } elseif ($this->isBlackJack($playerHandScore, $playerHandNumber)) {
                 return $playerName;
             } else {
                 return self::DRAW;
@@ -60,13 +39,13 @@ class BlackJackHandEvaluator
         }
     }
 
-    public function isHandBurst(BlackJackHand $hand): bool
+    public function isHandBurst(int $handScore): bool
     {
-        return $this->getHandScore($hand) >= self::HAND_BURST;
+        return $handScore >= self::HAND_BURST;
     }
 
-    private function isBlackJack(BlackJackHand $hand): bool
+    private function isBlackJack(int $handScore, int $handNumber): bool
     {
-        return $this->getHandScore($hand) === self::BLACK_JACK && count($hand->getHand()) === 2;
+        return $handScore === self::BLACK_JACK && $handNumber === 2;
     }
 }

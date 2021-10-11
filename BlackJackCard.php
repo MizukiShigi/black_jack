@@ -18,6 +18,9 @@ class BlackJackCard
         'K' => 10, 
     
     ];
+    public const MAX_A_RANK = 11;
+    public const MIN_A_RANK = 1;
+
     public function __construct(private string $suit, private string $number)
     {
     }
